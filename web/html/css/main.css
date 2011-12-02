@@ -1,0 +1,176 @@
+/* ==================
+Temporales ¿?
+=================== */   
+/* Titulares  (temporal) */
+#titLienzo{
+    width: 895px;
+    display:inline-block;
+    /*font-weight: bold;*/
+} 
+
+#titVisor {
+    width: 640px;
+    display:inline-block;
+    /*font-weight: bold;*/
+} 
+
+
+/* ==================
+Genéricos
+=================== */   
+/* Botón */
+.button {
+    display : inline-block;
+    /*width: 30px;*/
+    margin: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.bigButton {
+    display : inline-block;
+    width: 70px;
+    height: 40px;
+    margin: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+/* Header en una tabla */
+.tHeader {
+	background-color: #E9E1E1;
+}
+
+.box {
+	border:1px solid black;
+}
+
+.activo {
+    background-color: red;
+}
+
+.oculto {
+    display : none;    
+}
+
+/* ==================
+Lienzo
+=================== */   
+#lienzo, #lienzoSVG {
+	border:1px solid black;
+}
+
+#log {
+	height: 40px;
+	color:green;
+}
+
+#lienzoSVG {
+    height: 480px;
+    width: 640px;
+    display:inline-block;
+}
+
+/* ==================
+Visor
+=================== */   
+#visorMovie {
+    height: 480px;
+    width: 640px;
+	display:inline-block;
+	border:1px solid black;
+}
+
+/* ==================
+ToolBox
+=================== */   
+#paintBox {
+    display:inline-block;
+    vertical-align: top;
+    width:250px;
+    border:1px solid black;
+}
+
+.toolActiva {
+}
+
+.toolInactiva {
+    background-color: grey; 
+}
+
+/* ==================
+Logger
+=================== */   
+#pLogger {
+	width: 200px;
+	height: 400px;
+    border: 1px solid black;
+    background-color: grey;
+    float: right;
+    overflow: scroll;
+    
+    
+}
+
+/* ======================== */
+/* Step                     */
+/* ======================== */
+/* Id de los steps en la lista de steps */
+#pStepsIndex a {
+    display : inline-block;
+    width: 30px;
+    margin: 5px;
+    border: 1px solid black;
+}
+/* Elementos clicables */
+#pStepsContent span:hover, #pStepsIndex a:hover {
+    cursor: pointer;
+}
+
+/* Panel donde ponemos los fotogramas de ese step */
+.pFotogramas {
+	display: inline-block;
+}
+
+/** Inicio de un step */
+#pStepsContent span.startStep {
+	border: none;
+	width: 60px;
+	background-color: grey;
+}
+
+/* Caja de fotograma */
+.boxFotograma {
+    display:inline-block;
+    border: 1px solid black;
+    margin: 2px;
+    padding: 2px;
+}
+
+.fotogramaId, .codigoTiempo {
+    display: block; 
+}
+
+.fotogramaId {
+    text-align: center;	
+}
+
+#btnPlay {
+	font-weight: bold;
+    color:red;
+}
+
+#btnPlay:hover {
+    cursor: pointer;
+    /*background-color: white;*/
+}
+
+/** Status del fotograma */
+.fotogramaDisabled {
+	background-color: black;
+	color:white;
+}
+
+.fotogramaActivo {
+	background-color: red;
+}
