@@ -1,7 +1,6 @@
-<!DOCTYPE HTML>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"></meta>
     <!-- ==========================================  -->
     <!-- EXTERNOS  --> 
     <!-- ==========================================  -->
@@ -20,7 +19,7 @@
     <script type="text/javascript" src="external/yui.yahooapis.com/2.9.0/build/dragdrop/dragdrop-min.js"></script>    
 
     <script src="http://yui.yahooapis.com/2.9.0/build/menu/menu-min.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/menu/assets/skins/sam/menu.css">
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/menu/assets/skins/sam/menu.css"></link>
         
     <!-- Modernizr -->
     <script type="text/javascript" charset="utf-8" src="external/modernizr/modernizr-2.0.6.js" ></script>
@@ -106,7 +105,7 @@
  
 <!--  Titulares  -->
 <div>
-	<span id="titLienzo"><b>LIENZO</b> (Click&Drag pinta, D&D mueve, Rueda zoom). <a href="#" id="btnLimpia">Limpia!</a></span>
+	<span id="titLienzo"><b>LIENZO</b> (Click&amp;Drag pinta, D&amp;D mueve, Rueda zoom). <a href="#" id="btnLimpia">Limpia!</a></span>
 	<span id="titVisor"><b>VISOR</b> (pulsa <span id="btnPlay">Play!</span> para ver y cursor para avanzar y retroceder)</span>
 </div>
 
@@ -141,14 +140,14 @@
 	        <b>Acción con el nuevo dibujo</b><br/>
 	        <table border="1">
 	            <tr>
-	                <td class="tHeader">&nbsp;</td>
+	                <td class="tHeader">-</td>
 	                <td class="tHeader">Current Step</td> 
                     <td class="tHeader">New Step</td> 
 	            </tr>
                 <tr>
                     <td class="tHeader">Fotograma Actual</td>
                     <td><input type="radio" name="actionWhenMouseReleased" value="1"/></td> 
-                    <td>&nbsp;</td> 
+                    <td>-</td> 
                 </tr>
                 <tr>
                     <td class="tHeader">Un nuevo Fotograma (aparece de golpe)</td>
@@ -158,7 +157,7 @@
                 <tr>
                     <td class="tHeader">Varios nuevos Fotogramas (trazos)</td>
                     <td><input type="radio" name="actionWhenMouseReleased" value="5"/></td> 
-                    <td><input type="radio" name="actionWhenMouseReleased" value="4" checked/></td> 
+                    <td><input type="radio" name="actionWhenMouseReleased" value="4" checked="checked"/></td> 
                 </tr>
 	        </table>
 	        <table>
@@ -172,7 +171,7 @@
 	            </tr>
                 <tr>
                     <td>Stroke-with constante con zoom</td>
-                    <td><input id="zoomChangeStrokeWidth"  type="checkbox" checked/></td>
+                    <td><input id="zoomChangeStrokeWidth"  type="checkbox" checked="checked"/></td>
                 </tr>
 	        </table>
         </form>
@@ -206,7 +205,7 @@
 	        <!--  Selectores -->
 	        <div class="pSelectores">
 	            none    <input type="radio" name="kindColor" value="none"/>
-	            color   <input type="radio" name="kindColor" value="color" checked/>
+	            color   <input type="radio" name="kindColor" value="color" checked="checked"/>
 	            pattern <input type="radio" name="kindColor" value="pattern"/>
 	        </div>
 	        <!-- Selección del color -->
@@ -223,7 +222,7 @@
         <!-- B&W mode -->
         <form class="pBWMode">
             none  <input type="radio" name="colorBWMode" value="none"/>                            
-            white <input type="radio" name="colorBWMode" value="#FFFFFF"  checked/>
+            white <input type="radio" name="colorBWMode" value="#FFFFFF"  checked="checked"/>
             red   <input type="radio" name="colorBWMode" value="red"/>
             black <input type="radio" name="colorBWMode" value="#000000"/>
         </form>
@@ -235,7 +234,7 @@
 	    <div class="pColorMode oculto">
 	        <!--  Selectores -->
 	        <div class="pSelectores">
-	            none    <input type="radio" name="kindRelleno" value="none" checked/>
+	            none    <input type="radio" name="kindRelleno" value="none" checked="checked"/>
 	            color   <input type="radio" name="kindRelleno" value="color"/>
 	            red     <input type="radio" name="kindRelleno" value="red"/>
 	            pattern <input type="radio" name="kindRelleno" value="pattern"/>
@@ -252,7 +251,7 @@
 	    </div>
 	    <!-- B&W mode -->
         <form class="pBWMode">
-            none  <input type="radio" name="fillBWMode" value="none" checked/>                            
+            none  <input type="radio" name="fillBWMode" value="none" checked="checked"/>                            
             white <input type="radio" name="fillBWMode" value="#FFFFFF"/>
             red   <input type="radio" name="fillBWMode" value="red"/>
             black <input type="radio" name="fillBWMode" value="#000000"/>
@@ -321,12 +320,12 @@ A medida que se van creando steps, se crean paneles, pero sólo uno será visibl
                     <span class="startStep"></span>
                 </div>
                 <div>
-                    <input size="3" class="startDesactiva"> - <input size="3" class="endDesactiva"> <span class="button toogleDisabled">Act/Desact</span>
+                    <input size="3" class="startDesactiva"/> - <input size="3" class="endDesactiva"/> <span class="button toogleDisabled">Act/Desact</span>
                 </div>    
             </div>                 
             <div class="pFotogramas" style="display:inline-block;vertical-align:top;"></div>
         </div>
-        <input size="100" class="subtitulo"><span> Introduce el texto para los fotogramas (actualización automática). En blanco, el texto se borra</span>    
+        <input size="100" class="subtitulo"/><span> Introduce el texto para los fotogramas (actualización automática). En blanco, el texto se borra</span>    
     </div>    
 </div>
 
