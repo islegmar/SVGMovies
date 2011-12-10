@@ -239,6 +239,7 @@ SVGGroup.prototype.playWithTimer = function() {
 			
 			// Nos guardamos la imagen
 			// Primero la ponemos en un canvas HTML5
+			alert("POR AQUI NO DEBERIA PASAR SVGGroup.prototype.playWithTimer");
 		    var svg_xml = (new window.XMLSerializer()).serializeToString(document.getElementById("mySVG"));			
 			canvg('html5canvas', svg_xml);
 			// y luego usamos el método toDataUrl
@@ -274,6 +275,8 @@ SVGGroup.prototype.playWithTimer = function() {
  * Guarda el SVG
  */
 SVGGroup.prototype.saveSvg = function() {
+	alert("POR AQUI NO DEBERIA PASAR SVGGroup.prototype.saveSvg");
+	
     var svg_xml = (new window.XMLSerializer()).serializeToString(document.getElementById("mySVG"));			
     YAHOO.util.Connect.asyncRequest('POST', '../php/saveSvg.php', {
 		success: function(o) { },

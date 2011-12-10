@@ -1,5 +1,5 @@
 /**
- * Lienzo como SVG
+ * Handles the element <svg>
  *  
  * @return
  */
@@ -8,6 +8,9 @@ function WidgetLienzoSVG() {
 	
 	// DOM con el SVG
 	this.eSVG
+
+	// DOM con el Grupo
+	this.eGroup = null;
 
 	// El objeto SVGGroup
 	// TODO - Lo necesitamos porque este elemento lleva "la cuenta" del zoom 
@@ -48,11 +51,23 @@ function WidgetLienzoSVG() {
 }
 YAHOO.lang.extend(WidgetLienzoSVG, WidgetLienzo);
 
+// --------------------------------------------------------------------- Setters
+WidgetLienzoSVG.prototype.setESVG= function(eSVG) {
+	this.eSVG = eSVG;
+}
+
+WidgetLienzoSVG.prototype.setEGroup = function(eGroup) {
+	this.eGroup = eGroup;
+}
+
+// -------------------------------------------------------------- Public Methods
 // TODO (lo llama WidgetVideoFotograma cuando Edit)
 WidgetLienzoSVG.prototype.refresh = function(eSVG) {
-	this.eSVG = YAHOO.util.Dom.get("mySVG");
-	this.eGroup   = YAHOO.util.Dom.get("mainGroup");
-	this.svgGroup = new SVGGroup("mainGroup", 640, 480);
+	// TODO ¿Funcionará?
+	//this.eSVG = YAHOO.util.Dom.get("mySVG");
+	//this.eGroup   = YAHOO.util.Dom.get("mainGroup");	
+	//this.svgGroup = new SVGGroup("mainGroup", 640, 480);
+	this.svgGroup = new SVGGroup(this.eGroup, 640, 480);
 	if ( this.eventZoom ) {
 		this.svgGroup.setEventZoom(this.eventZoom);
 	}
@@ -63,9 +78,10 @@ WidgetLienzoSVG.prototype.render = function() {
 	WidgetLienzoSVG.superclass.render.call(this);
 
 	// TODO
-	this.eSVG = YAHOO.util.Dom.get("mySVG");
-	this.eGroup   = YAHOO.util.Dom.get("mainGroup");
-	this.svgGroup = new SVGGroup("mainGroup", 640, 480);
+	//this.eSVG = YAHOO.util.Dom.get("mySVG");
+	//this.eGroup   = YAHOO.util.Dom.get("mainGroup");
+	//this.svgGroup = new SVGGroup("mainGroup", 640, 480);
+	this.svgGroup = new SVGGroup(this.eGroup, 640, 480);
 	if ( this.eventZoom ) {
 		this.svgGroup.setEventZoom(this.eventZoom);
 	}
@@ -306,7 +322,8 @@ WidgetLienzoSVG.prototype.save = function(isPathChanged) {
 	    var myInd = this.ind2Save;
 	    this.ind2Save += numFiles2Generate; 
 		
-	    var svg_xml = (new window.XMLSerializer()).serializeToString(document.getElementById("mySVG"));			
+	    //var svg_xml = (new window.XMLSerializer()).serializeToString(document.getElementById("mySVG"));			
+	    var svg_xml = (new window.XMLSerializer()).serializeToString(this.eSVG);			
 	    YAHOO.util.Connect.asyncRequest('POST', '../php/saveSvg.php', 
 	    {
 		  success: function(o) { 

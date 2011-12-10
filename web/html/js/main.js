@@ -40,6 +40,13 @@ var EVENT_MOVE = new YAHOO.util.CustomEvent("Move");
         // Lienzo
         var lienzoSVG = new WidgetLienzoSVG();
         lienzoSVG.setLienzo("lienzoSVG");
+        // Check if the svg element is inside a iframe
+        var svgDocument = document;
+        if ( document.getElementById("myFrame") ) {
+        	svgDocument = document.getElementById("myFrame").contentWindow.document;
+        }
+        lienzoSVG.setESVG(svgDocument.getElementById("mySVG"));
+        lienzoSVG.setEGroup(svgDocument.getElementById("mainGroup"));
         // TODO - No me mola mucho ésta solución..... ¿por qué?
         // lienzoSVG.setPaintToolBox(toolBox);
         lienzoSVG.setEventZoom(EVENT_ZOOM);
@@ -54,8 +61,6 @@ var EVENT_MOVE = new YAHOO.util.CustomEvent("Move");
         // TODO - Eliminar
         toolBox.setLienzo(lienzoSVG);
         TOOLBOX = toolBox;
-        
-
         
         // Tenemos que cargar una serie de imágenes
         // TODO 

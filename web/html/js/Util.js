@@ -286,6 +286,7 @@ function createRandomNumber(Min, Max){
 }
 
 Util.getTemplateElement = function(className, eLista, returnNullIfError) {
+	//alert("Util.getTemplateElement(" + className + "," + eLista + ")");
 	return Util.getSingleElement(YAHOO.util.Dom.getElementsByClassName (className, null, eLista ? eLista : document.body), returnNullIfError);
 }
 
@@ -337,7 +338,7 @@ Util.getChildrenByTagName  = function(element, tagName, returnNullIfError) {
 
 
 Util.getChildrenByClassName  = function(element, className, returnNullIfError) {
-	//alert("getChildrenByTagName(" + element + "," + tagName + ")");
+	//alert("getChildrenByTagName(" + element + "," + className + ")");
 	return Util.getSingleElement(YAHOO.util.Dom.getElementsByClassName(className, null, element), returnNullIfError);
 }
 

@@ -15,10 +15,6 @@ SVGUtil.COS30 = Math.cos(Math.PI/6);
 SVGUtil.DIRECCIONES = ['N', 'NE', 'SE', 'S', 'SW', 'NW'];
 
 
-/*
- * domSvg      = document.getElementById("mySVG")
- * html5canvas = document.getElementById("myCanvas");
- */
 SVGUtil.prototype.svg2Img = function (domSvg, html5canvas) {
 	// Codificamos base64 la imagen SVG 
     // https://developer.mozilla.org/en/XMLSerializer
