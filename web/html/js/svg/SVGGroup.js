@@ -78,7 +78,7 @@ SVGGroup.prototype.translate = function (dX, dY) {
 	var transform = 'scale (' + this.zoom + ') translate(' + this.offsetX/this.zoom + ' ' + this.offsetY/this.zoom + ')';
 	this.group.setAttribute('transform', transform);
 	
-	Logger.getInstance().log("OFFSET (" + this.offsetX + "," + this.offsetY + ")", "logOffset");
+	Logger.getInstance().lowDebug("OFFSET (" + this.offsetX + "," + this.offsetY + ")", "logOffset");
 }
 
 /**
@@ -136,8 +136,8 @@ SVGGroup.prototype.zoomRadial = function (delta, X, Y) {
 	this.offsetY -= incOffsetY;
 	this.zoom     = newZoom;
 	
-	Logger.getInstance().log(this.zoom, "logZoom");
-	Logger.getInstance().log("(" + this.offsetX + "," + this.offsetY + ")", "logOffset");
+	Logger.getInstance().lowDebug(this.zoom, "logZoom");
+	Logger.getInstance().lowDebug("(" + this.offsetX + "," + this.offsetY + ")", "logOffset");
 	
 	var transform = 'scale (' + this.zoom + ') translate(' + this.offsetX/this.zoom + ' ' + this.offsetY/this.zoom + ')';
 	this.group.setAttribute('transform', transform);
@@ -162,7 +162,7 @@ SVGGroup.prototype.createLine = function(group, inicio, style ) {
     // Nos guardamos el elemento creado
     //this.paths.push(p);
     
-    Logger.getInstance().log("START PATH : " + puntos , "logUv");
+    Logger.getInstance().lowDebug("START PATH : " + puntos , "logUv");
 	
 	return p;
 }
@@ -185,7 +185,7 @@ SVGGroup.prototype.addPoint2Line = function(path, punto) {
 	
 	path.setAttribute('d', path.getAttribute('d')+puntoPath);
 	
-	Logger.getInstance().log("ADD POINT : " + puntoPath, "logUv");
+	Logger.getInstance().lowDebug("ADD POINT : " + puntoPath, "logUv");
 }
 
 SVGGroup.prototype.add2Line = function(path, msg) {

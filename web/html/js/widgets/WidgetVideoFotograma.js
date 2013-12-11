@@ -1,5 +1,5 @@
 /**
- * Representa un fotograma dentro de un step 
+ * Representa UN fotograma dentro de un step 
  */
 function WidgetVideoFotograma(id) {
 	this.id = id;
@@ -129,6 +129,7 @@ WidgetVideoFotograma.prototype.render = function() {
 		de una variable global :-(  
    	*/
    	var myself = this;
+   	/* DISABLE MENU
    	var oContextMenu = new YAHOO.widget.ContextMenu(
                                  YAHOO.util.Dom.generateId(null, "fotogramaContextMenu"), 
                                 {
@@ -144,6 +145,7 @@ WidgetVideoFotograma.prototype.render = function() {
 			   							      ]    
                                 } 
                            );
+   	 */
 }
 
 /** Muestra el contenido de este fotograma en el display */

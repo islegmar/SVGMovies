@@ -20,3 +20,14 @@ WidgetFillColorPicker.prototype.activeBWMode = function() {
 WidgetFillColorPicker.prototype.getTipo = function() {
 	return WidgetPaintToolBox.TOOL_FILLCOLORPICKER;
 }
+
+// ----------------------------------------------------------- WidgetColorPicker
+WidgetFillColorPicker.prototype.render = function() {
+  this.color = 'none';
+  
+  // ------------------------------------------------------------------ Listener
+  $('body').bind('bgColor', {myself:this}, function(evt, color) {
+    var myself = evt.data.myself;
+    myself.color = color;
+  });
+}

@@ -1,0 +1,1 @@
+/home/islegmar/projects/myWebsite/www/external/jquery.hammer/03-12-2013/jquery.hammer.js

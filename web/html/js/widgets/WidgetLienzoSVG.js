@@ -48,6 +48,7 @@ function WidgetLienzoSVG() {
 	
 	// Background del lienzo
 	this.background = null;
+	
 }
 YAHOO.lang.extend(WidgetLienzoSVG, WidgetLienzo);
 
@@ -67,7 +68,7 @@ WidgetLienzoSVG.prototype.refresh = function(eSVG) {
 	//this.eSVG = YAHOO.util.Dom.get("mySVG");
 	//this.eGroup   = YAHOO.util.Dom.get("mainGroup");	
 	//this.svgGroup = new SVGGroup("mainGroup", 640, 480);
-	this.svgGroup = new SVGGroup(this.eGroup, 640, 480);
+	this.svgGroup = new SVGGroup(this.eGroup, 800, 480);
 	if ( this.eventZoom ) {
 		this.svgGroup.setEventZoom(this.eventZoom);
 	}
@@ -76,12 +77,36 @@ WidgetLienzoSVG.prototype.refresh = function(eSVG) {
 
 WidgetLienzoSVG.prototype.render = function() {
 	WidgetLienzoSVG.superclass.render.call(this);
+	
+	// ----------------------------------------------------------------- Listeners
+	var myself = this;
+	$('body').bind('renderMovie', function(evt){
+	  myself.generateMovie();
+	});
+  $('body').bind('generateImage', function(evt){
+    myself.generateImage();
+  });
+  
+  $('body').bind('moveMode', function(evt){
+    $('body').attr('data-action', 'move');
+    myself.isMoving = true;
+  });
+  
+  $('body').bind('paintMode', function(evt){
+    $('body').attr('data-action', 'paint');
+    myself.isMoving = false;
+  });
+  
+  $('body').bind('zoom', function(evt, delta){
+    myself.doZoom(delta);
+  });
+  
 
 	// TODO
 	//this.eSVG = YAHOO.util.Dom.get("mySVG");
 	//this.eGroup   = YAHOO.util.Dom.get("mainGroup");
 	//this.svgGroup = new SVGGroup("mainGroup", 640, 480);
-	this.svgGroup = new SVGGroup(this.eGroup, 640, 480);
+	this.svgGroup = new SVGGroup(this.eGroup, 800, 480);
 	if ( this.eventZoom ) {
 		this.svgGroup.setEventZoom(this.eventZoom);
 	}
@@ -121,7 +146,7 @@ WidgetLienzoSVG.prototype.render = function() {
 	// Widget Video
 	} else {
 		this.widgetVideo = new WidgetVideoHTML5();
-		this.widgetVideo.setWidth(640);
+		this.widgetVideo.setWidth(800);
 		this.widgetVideo.setHeight(480);
 		this.widgetVideo.setContainer("visorMovie");
 		this.widgetVideo.render();
@@ -167,9 +192,14 @@ WidgetLienzoSVG.prototype.limpia = function() {
 }
 
 WidgetLienzoSVG.prototype.play = function() {
+  /* Mostramos el visor y ocultamos el designer */
+  
+  $("body").attr('data-action', 'play');
 	if ( this.isLocal ) {
-		//alert("play local");
-		this.visorSVG.play();
+		// When the play is done, return to paint
+		this.visorSVG.play(function(){
+		  $("body").attr('data-action', 'paint');
+		});
 	} else {
 		// this.svgGroup.play();
 		// Generate Movie
@@ -183,6 +213,21 @@ WidgetLienzoSVG.prototype.play = function() {
 	  		failure: function(o) { alert("Error : " + o.responseText); }
 	    });
 	}
+}
+
+WidgetLienzoSVG.prototype.generateMovie = function() {
+  console.log('generateMovie');
+  //this.svgGroup.play();
+  // Generate Movie
+  var myself = this;
+    YAHOO.util.Connect.asyncRequest('POST', '../php/generateMovie.php', {
+    success: function(o) { 
+        alert("Película generada con éxito...");
+        // Mostramos el preview de la peli
+          myself.widgetVideo.show("../data/movie/peli.ogv");
+        },
+      failure: function(o) { alert("Error : " + o.responseText); }
+    });
 }
 
 
@@ -260,11 +305,14 @@ WidgetLienzoSVG.prototype.translate = function (dX, dY) {
 }
 
 WidgetLienzoSVG.prototype.doZoom = function (delta) {
+  console.log('delta : ' + delta);
 	this.svgGroup.zoomRadial(delta/5, 350, 200);
+	console.log('isZoomCreaFotogramas : ' + TOOLBOX.isZoomCreaFotogramas());
 	if ( TOOLBOX.isZoomCreaFotogramas() ) {
 		this.save(false);
 	}
 }
+
 /*
 WidgetLienzoSVG.prototype.save = function () {
 	// Codificamos base64 la imagen SVG 
@@ -291,11 +339,25 @@ WidgetLienzoSVG.prototype.save = function () {
     }
 }
 */
+
+/**
+ * This function is called when:
+ * a) We have finished to draw a path (mouse released)
+ * b) We have performed a unit of Movement
+ * c) We have performed a unit of Zoom
+ * d) We have changed the text
+ * 
+ * @param  isPathChanged true in case a), false otherwise. If true we force to 
+ * save
+ */
 WidgetLienzoSVG.prototype.save = function(isPathChanged) {
 	// Sólo grabamos si lo que ha cambiado es un path o ha pasado 
-	// un tiempo prudencial
+	// un tiempo prudencial, básicamente para evitar crear demasiados fotogramas 
+  // cuando nos movemos o hacemos zoom, así como para ignorar movimientos bruscos
+  // y rápidos del pincel
 	var now = (new Date()).getTime();
-	if ( !isPathChanged && this.lastSaveTime && (now-this.lastSaveTime) < 500 ) return;
+	if ( !isPathChanged && this.lastSaveTime && (now-this.lastSaveTime) < 10 ) return;
+	
 	this.lastSaveTime=now;
 	
 	var templequeLevel  = TOOLBOX.getTemblequeLevel();
@@ -316,7 +378,7 @@ WidgetLienzoSVG.prototype.save = function(isPathChanged) {
 	    	numFiles2Generate=1;
 	    }
 	    
-	    Logger.getInstance().log("save [" + this.ind2Save + "]. numFiles2Generate : " + numFiles2Generate + " ...");  
+	    Logger.getInstance().lowDebug("save [" + this.ind2Save + "]. numFiles2Generate : " + numFiles2Generate + " ...");  
 	    // Incrementamos el índice (lo hacemos ahora para evitar problemas de 
 	    // sincronía, aunque no sé si esto sirve)
 	    var myInd = this.ind2Save;
@@ -328,7 +390,7 @@ WidgetLienzoSVG.prototype.save = function(isPathChanged) {
 	    {
 		  success: function(o) { 
 	    	var data = YAHOO.lang.JSON.parse(o.responseText);
-	    	Logger.getInstance().log("FIN save [" + data.startInd + "]. endInd : " + data.endInd); 
+	    	Logger.getInstance().lowDebug("FIN save [" + data.startInd + "]. endInd : " + data.endInd); 
 	      },
 	      failure: function(o) { alert("Error : " + o.responseText); }
 	    }, "image="              + svg_xml + 
@@ -339,6 +401,16 @@ WidgetLienzoSVG.prototype.save = function(isPathChanged) {
 	       "&actionOnSave="      + actionOnSave
 	    );
 	}
+}
+
+/**
+ * Generate an image with the current svg
+ */
+WidgetLienzoSVG.prototype.generateImage = function() {
+  var svg_xml = (new window.XMLSerializer()).serializeToString(this.eSVG);    
+  $renderCanvas = $('#renderCanvas');
+  $renderCanvas.show();
+  canvg($renderCanvas.get(0), svg_xml);
 }
 
 /**
@@ -359,6 +431,8 @@ WidgetLienzoSVG.prototype.writeText = function(text) {
 }
 
 WidgetLienzoSVG.prototype.drawCirculo = function (centro) {
+  throw "WidgetLienzoSVG.prototype.drawCirculo : Unsupported Operation";
+  
 	var cirulo = new SVGCirculo();
 	cirulo.setCentro(this.svgGroup.transformaCoordenadas(centro));
 	// Nos la jugamos: como estamos dibujando círculos la herramienta activa 

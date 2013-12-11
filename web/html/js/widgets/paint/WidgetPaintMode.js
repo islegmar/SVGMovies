@@ -16,6 +16,10 @@ function WidgetPaintMode() {
 	// Checkbox. Si activo, el stroke-with varía con el zoom para que VISUALMENTE
 	// tenga siempre el mismo tamaño
 	this.eZoomChangeStrokeWidth = null;
+	
+	// Action when finishing an action.
+	// We can set it or get it from the checkboxes
+	this.actionWhenMouseReleased = null;
 }
 
 // Posibles acciones cuando alzamos el lápiz    
@@ -30,16 +34,25 @@ YAHOO.lang.extend(WidgetPaintMode, WidgetPaintTool);
 // --------------------------------------------------------------------- Setters
 // ------------------------------------------------------------ Métodos Públicos
 WidgetPaintMode.prototype.getActionWhenMouseReleased = function() {
-	var action = null;
-	
-	for(var ind=0; action==null && ind<this.eCbActionWhenMouseRelease.length; ++ind ) {
-		if ( this.eCbActionWhenMouseRelease[ind].checked ) {
-			action = this.eCbActionWhenMouseRelease[ind].value;
-		}
-	}
-	
-	return action;
+	if ( this.actionWhenMouseReleased!=null ) {
+	  return this.actionWhenMouseReleased;
+	} else {
+    var action = null;
+  	
+  	for(var ind=0; action==null && ind<this.eCbActionWhenMouseRelease.length; ++ind ) {
+  		if ( this.eCbActionWhenMouseRelease[ind].checked ) {
+  			action = this.eCbActionWhenMouseRelease[ind].value;
+  		}
+  	}
+  	
+  	return action;
+  }
 }
+
+WidgetPaintMode.prototype.setActionWhenMouseReleased = function(action) {
+  this.actionWhenMouseReleased = action;
+}
+
 
 WidgetPaintMode.prototype.isZoomCreaFotogramas = function() {
 	return this.eZoomCreaFotogramas.checked;

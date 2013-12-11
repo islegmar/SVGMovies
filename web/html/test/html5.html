@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Pure HTML5</title>
+</head>
+<body>
+<h1>HTML5 with embedded SVG : not working</h1>
+<h2>With namespaces</h2>
+<svg xmlns="http://www.w3.org/2000/svg"> 
+    <circle r="50" cx="50" cy="50" fill="green"/> 
+</svg>
+<h2>Without namespaces</h2>
+<svg> 
+    <circle r="50" cx="50" cy="50" fill="red"/> 
+</svg>
+<svg height="2em" width="3em" preserveAspectRatio="none" viewBox="0 0 100 100">
+  <rect x="0" y="0" width="100" height="100" fill="red"/>
+</svg>
+</body> 
+</html>

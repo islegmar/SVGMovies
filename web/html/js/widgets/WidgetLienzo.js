@@ -7,8 +7,11 @@
  * @return
  */
 function WidgetLienzo() {
+  this.ID = 'WidgetLienzo';
+  
 	// panel donde se situal el canvas de HTML5 o de SVG o de lo que sea
 	this.lienzo = null;
+	this.$lienzo = null;
 	
 	// log panel
 	this.logPanel = null;
@@ -48,6 +51,13 @@ function WidgetLienzo() {
 	
 	// Si lo ejecutamos en local o no
 	this.isLocal = true;
+	
+	// @todo : Unificar un poco (también se usa isDragging)
+	 // Indica si estamos moviendo o no (-> Pintando)
+  this.isMoving = false;
+  // Indica si iniciamos una acción (paint/move/zoom)
+  this.isStartAction = null;
+
 }
 // Modos del cursor 
 WidgetLienzo.MODE_PAINT = 0;
@@ -111,7 +121,8 @@ function doIncStrokeWidth(myself) {
 */
 // --------------------------------------------------------------------- Setters
 WidgetLienzo.prototype.setLienzo = function(lienzo) {
-	this.lienzo = YAHOO.util.Dom.get(lienzo);
+  this.lienzo = YAHOO.util.Dom.get(lienzo);
+	this.$lienzo = $('#' + lienzo);
 }
 
 /*
@@ -136,7 +147,249 @@ WidgetLienzo.prototype.render = function() {
 	this.mouseWheel = new MouseWheel();
 	this.mouseWheel.setMagnifier(this);
 	this.mouseWheel.render();
-	// ------------------------------- EVENTOS ------------------------------ //
+	
+	// ===========================================================================
+	//
+	// Actions
+	//
+	// ===========================================================================
+	
+	// ---------------------------------------------------------------------- Zoom
+	// Start a Zoom
+	this.$lienzo.bind('customZoomStart', {myself:this}, function(e) {
+	  var myself = e.data.myself;
+    // Create a new Fotogram where to put all the zoom
+	  TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP);
+
+	  myself.isStartAction = true;
+	  $('body').attr('data-action', 'move');
+	  
+	  return false;
+	});
+	
+	// Zoom the image
+	this.$lienzo.bind('customZoomRun', {myself:this}, function(e, delta) {
+	  var myself = e.data.myself;
+	  if ( !myself.isStartAction ) return;
+	  // When doZoom is executed, the SVG is saved. The firs action just the start
+	  // will CREATE a new Fotogram ....
+	  myself.doZoom(delta);
+	  // ... while the next steps will be ADDES to the current Fotograma
+	  TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_CURRSTEP);  
+	  
+	  return false;
+	});
+	
+	// End the zoom
+	this.$lienzo.bind('customZoomEnd', {myself:this}, function(e) {
+	  var myself = e.data.myself;
+	  if ( !myself.isStartAction ) return;
+	  
+	  myself.isStartAction = null;
+	  $('body').attr('data-action', 'paint');
+	  
+	  return false;
+	});
+	
+	
+  // --------------------------------------------------------------------- Paint
+  
+	// Start Paint
+	function startPaint(e){
+    var myself = e.data.myself;
+
+    // We start a paint, process the event
+    // If using gesture, not paint if if is with more that one finger
+    if( !(e.button == 2 || myself.isMoving) && (!e.gesture || e.gesture.touches.length>1) ) {
+      e.preventDefault();
+      
+      myself.isStartAction = true;
+      
+      Logger.getInstance().lowDebug("[DOWN");
+      var punto = Util.getRelCoordinates(e, myself.lienzo, Logger.getInstance());
+      //YAHOO.util.Event.stopEvent(e); 
+      
+      myself.mode=WidgetLienzo.MODE_PAINT;
+      // Si tenemos la herramienta de círculo activada, al hacer click
+      // dibujamos un círculo
+      if (TOOLBOX.getPaintToolActiva().getTipo()==WidgetPaintToolBox.TOOL_CIRCULO) {
+        myself.drawCirculo(punto);
+        // Línea  
+      } else {
+        // Creamos un nuevo path y guardamos el punto
+        myself.paths.push(new Array());
+        myself.paths[myself.paths.length-1].push(punto);
+        ++myself.numPuntos;
+        
+        if ( myself.logPanel ) {
+          myself.logPanel.innerHTML="START [" + myself.numPuntos + "] : " + punto;
+        }
+        myself.startPath(punto); 
+        //myself.context.moveTo(punto[0], punto[1]);
+        myself.isDragging = true;
+      }
+      
+      myself.lastPoint=punto;
+      
+      return false;
+    }
+  };
+  
+  // Painting
+  function execPaint(e){
+    var myself = e.data.myself;
+
+    if ( myself.mode==WidgetLienzo.MODE_PAINT ) {
+      e.preventDefault();
+      
+      //Logger.getInstance().lowDebug('.');
+      var punto = Util.getRelCoordinates(e, myself.lienzo);
+      
+      // Sólo lo tenemos en cuentas en el caso de líneas
+      if  (TOOLBOX.getPaintToolActiva().getTipo()==WidgetPaintToolBox.TOOL_LINEA) {
+        // Guardamos el punto en el path actual
+        myself.paths[myself.paths.length-1].push(punto);
+        ++myself.numPuntos;
+        
+        //Logger.getInstance().lowDebug("DRAW [" + myself.numPuntos + "] : " + punto);
+        
+        myself.addPoint2Path(punto);
+      }
+      
+      myself.lastPoint=punto;
+      myself.isStartAction = false;
+      
+      return false;
+    }
+  };
+  
+  
+  // End Paint
+  function endPaint(e){
+    var myself = e.data.myself;
+
+    // End of paint, process the event
+    if( myself.mode == WidgetLienzo.MODE_PAINT ) {
+      e.preventDefault();
+      
+      Logger.getInstance().lowDebug('UP ' + myself.lienzo);  
+      //var punto = Util.getRelCoordinates(e, myself.lienzo, Logger.getInstance());
+      var punto  = myself.paths[myself.paths.length-1];
+      //YAHOO.util.Event.stopEvent(e); 
+      Logger.getInstance().lowDebug('punto:' + punto +']');
+
+      Logger.getInstance().lowDebug("LINE");
+      
+      // Sólo lo tenemos en cuentas en el caso de líneas
+      if (TOOLBOX.getPaintToolActiva().getTipo()==WidgetPaintToolBox.TOOL_LINEA) {
+        // Guardamos el punto en el path actual
+        myself.paths[myself.paths.length-1].push(punto);
+        ++myself.numPuntos;
+        Logger.getInstance().lowDebug("#puntos : " + myself.numPuntos);
+        
+        // Marke the end of the path -> method save will be called
+        myself.endPath(punto);
+      }
+      
+      myself.isDragging = false;
+      myself.isMoving = false;
+      myself.mode=null;
+      myself.isStartAction = null; 
+      
+      return false;
+    }
+  };
+  
+  // ---------------------------------------------------------------------- Move
+  
+  // Start Move
+  function startMove(e){
+    var myself = e.data.myself;
+    
+    // We start a movement, process the event
+    if( e.button == 2 || myself.isMoving || (e.gesture && e.gesture.touches.length>1) ) {
+      e.preventDefault();
+      
+      myself.isStartAction = true;
+      
+      var punto = Util.getRelCoordinates(e, myself.lienzo, Logger.getInstance());
+      Logger.getInstance().debug("startMove. punto:"+punto);
+      
+      myself.mode=WidgetLienzo.MODE_MOVE;
+      myself.lastPoint=punto;
+      
+      Logger.getInstance().debug("START_MOVE|");
+      $('body').attr('data-action', 'move');
+
+      return false;
+    }
+  };
+  
+  // Moving
+  function execMove(e){
+    var myself = e.data.myself;
+
+    if (myself.mode==WidgetLienzo.MODE_MOVE) {
+      e.preventDefault();
+      
+      //Logger.getInstance().lowDebug('.');
+      var punto = Util.getRelCoordinates(e, myself.lienzo);
+      
+     // IL - 07/03/13
+     // When moving, we agrupate all the movements in one step
+     // In the first movement, we create a new Step
+     if ( myself.isStartAction ) {
+       TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP);
+     } else {
+       TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_CURRSTEP);  
+     }
+     
+      var dX =  punto[0]-myself.lastPoint[0];
+      var dY =  punto[1]-myself.lastPoint[1];
+      myself.translate(dX,dY);
+      
+      myself.lastPoint=punto;
+      myself.isStartAction = false;
+      
+      Logger.getInstance().debug('.');
+      
+      return false;
+    }
+  };
+  
+  // End Move
+  function endMove(e){
+    var myself = e.data.myself;
+    
+    // End Move, process
+    if( myself.mode == WidgetLienzo.MODE_MOVE ) {
+      e.preventDefault();
+      //var punto = Util.getRelCoordinates(e, myself.lienzo, Logger.getInstance());
+      var punto  = myself.paths[myself.paths.length-1];
+      //YAHOO.util.Event.stopEvent(e); 
+      Logger.getInstance().lowDebug('punto:' + punto +']');
+      
+      Logger.getInstance().lowDebug("FIN DEL MOVE");
+      // IL - 07/03/13
+      // When moving, we agrupate all the movements in one step
+      TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP);
+      
+      //myself.context.lineTo(punto[0], punto[1]);
+      //myself.context.stroke();
+      myself.isDragging = false;
+      myself.isMoving = false;
+      myself.mode=null;
+      myself.isStartAction = null; 
+      
+      // Automatically, switch to paint mode
+      $('body').trigger('paintMode'); 
+          
+      Logger.getInstance().debug('END MOVE|');
+      return false;
+    }
+  };
+  
+  // ------------------------------- EVENTOS ------------------------------ //
 	
 	document.body.onContextMenu=function(){
 		alert("ctx");
@@ -144,7 +397,7 @@ WidgetLienzo.prototype.render = function() {
 	
 	// Mostramos el dibujo
     YAHOO.util.Event.addListener("btnPlay", "click", function(e, myself) {
-    	myself.play();
+      myself.play();
     }, this);
 
 	// Guardamos el dibujo
@@ -173,100 +426,83 @@ WidgetLienzo.prototype.render = function() {
     }, this);
 	
 	
-    // START PATH
-    YAHOO.util.Event.addListener(this.lienzo, "mousedown", function(e, myself) {
-    	var punto = Util.getRelCoordinates(e, myself.lienzo);
-		//YAHOO.util.Event.stopEvent(e); 
+    
+    
+    // --------------------------------------------------- TEMPORAL
+    var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };
+    
+    // ---- Listeners
+    if ( isMobile.any() ) {
+      // Paint using jquery events
+      $(this.lienzo).bind("touchstart", {myself:this}, startPaint);
+      $(this.lienzo).bind("touchmove" , {myself:this}, execPaint);
+      $(this.lienzo).bind("touchend"  , {myself:this}, endPaint);
 
-    	// Inicio del Move
-    	if( e.button == 2) {
-    		myself.mode=WidgetLienzo.MODE_MOVE;
-    	// Inicio del Paint    		
-    	} else {
-    		myself.mode=WidgetLienzo.MODE_PAINT;
-    		// Si tenemos la herramienta de círculo activada, al hacer click
-    		// dibujamos un círculo
-    		if (TOOLBOX.getPaintToolActiva().getTipo()==WidgetPaintToolBox.TOOL_CIRCULO) {
-    			myself.drawCirculo(punto);
-    		// Línea	
-    		} else {
-	            // Creamos un nuevo path y guardamos el punto
-	            myself.paths.push(new Array());
-	            myself.paths[myself.paths.length-1].push(punto);
-	            ++myself.numPuntos;
-	
-	            if ( myself.logPanel ) {
-	            	myself.logPanel.innerHTML="START [" + myself.numPuntos + "] : " + punto;
-	            }
-	            myself.startPath(punto); 
-	            //myself.context.moveTo(punto[0], punto[1]);
-	            myself.isDragging = true;
-    		}
-    	}
-    	
-		myself.lastPoint=punto;
-		return false;
-    }, this);
-    
-    // END LINE 
-    YAHOO.util.Event.addListener(this.lienzo, "mouseup", function(e, myself) {
-    	var punto = Util.getRelCoordinates(e, myself.lienzo);
-   		//YAHOO.util.Event.stopEvent(e); 
-        
-    	// Fin del Move
-    	if( e.button == 2) {
-    		; 
-    	// Fin de la línea	
-    	} else {
-    		// Sólo lo tenemos en cuentas en el caso de líneas
-    		if (TOOLBOX.getPaintToolActiva().getTipo()==WidgetPaintToolBox.TOOL_LINEA) {
-		        // Guardamos el punto en el path actual
-		        myself.paths[myself.paths.length-1].push(punto);
-		        ++myself.numPuntos;
-		        
-		        if ( myself.logPanel ) {
-		        	myself.logPanel.innerHTML="END [" + myself.numPuntos + "] : " + punto;
-		        }
-		        
-		        myself.endPath(punto);
-    		}
-    	}
-        //myself.context.lineTo(punto[0], punto[1]);
-        //myself.context.stroke();
-        myself.isDragging = false;
-        myself.mode=null;
-        return false;
-    }, this);
-    
-    // DRAW LINE
-    YAHOO.util.Event.addListener(this.lienzo, "mousemove", function(e, myself) {
-        var punto = Util.getRelCoordinates(e, myself.lienzo);
-   		//YAHOO.util.Event.stopEvent(e); 
-        
-    	switch (myself.mode) {
-		case WidgetLienzo.MODE_MOVE:
-			myself.translate(punto[0]-myself.lastPoint[0],punto[1]-myself.lastPoint[1]);
-			break;
-		case WidgetLienzo.MODE_PAINT:
-    		// Sólo lo tenemos en cuentas en el caso de líneas
-    		if (TOOLBOX.getPaintToolActiva().getTipo()==WidgetPaintToolBox.TOOL_LINEA) {
-		        // Guardamos el punto en el path actual
-		        myself.paths[myself.paths.length-1].push(punto);
-		        ++myself.numPuntos;
-		
-		        if ( myself.logPanel ) {
-		        	myself.logPanel.innerHTML="DRAW [" + myself.numPuntos + "] : " + punto;
-		        }
-		        
-		        myself.addPoint2Path(punto);
-    		}
-			break;
-		default:
-			break;
-		}
-		myself.lastPoint=punto;
-		return false;
-    }, this);
+      // Movement using hammer
+      var $hammer = $(this.lienzo).hammer();
+      $hammer.on("transformstart", {myself:this}, startMove);
+      $hammer.on("transform"     , {myself:this}, execMove);
+      $hammer.on("transformend"  , {myself:this}, endMove);
+      /*
+      $hammer.on("pinchout", {myself:this}, function(e){
+        var myself = e.data.myself;
+        myself.doZoom(0.5);
+      });
+      $hammer.on("pinchin", {myself:this}, function(e){
+        var myself = e.data.myself;
+        myself.doZoom(-0.5);
+      });
+      */
+      
+    // Browser
+    } else {
+      $(this.lienzo).bind("mousedown", {myself:this}, startPaint);
+      $(this.lienzo).bind("mousemove", {myself:this}, execPaint);
+      $(this.lienzo).bind("mouseup  ", {myself:this}, endPaint);
+      
+      $(this.lienzo).bind("mousedown", {myself:this}, startMove);
+      $(this.lienzo).bind("mousemove", {myself:this}, execMove);
+      $(this.lienzo).bind("mouseup  ", {myself:this}, endMove);
+    }
+    // -------------------------------------------------------------------- PLAY
+    /*Hammer(this.lienzo).on('pinchout', function(){
+      alert('pinchout');
+    });
+    Hammer(this.lienzo).on('pinchin', function(){
+      alert('pinchin');
+    });
+    */
+    /*
+    Hammer(this.lienzo).on('swipe', function(e) {
+      alert('Swipe');
+    })
+    */;
+    /*
+    $(this.lienzo).bind( "click", function(e) {
+      e.preventDefault();
+      
+      alert("Tap");
+      myself.play();
+    });*/
 }
 
 /* Limpia el lienzo */
@@ -282,7 +518,8 @@ WidgetLienzo.prototype.limpia = function() {
 
 
 WidgetLienzo.prototype.play = function() {
-	// Limpia el lienzo
+  alert('WidgetLienzo.prototype.play');
+  // Limpia el lienzo
 	this.limpia();
 
 	// Empezamos a dibujar  

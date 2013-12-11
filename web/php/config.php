@@ -1,20 +1,16 @@
 <?php
 // Logger
-include_once('./common/log4php/Logger.php');
-// No log
-//Logger::configure($_SERVER['DOCUMENT_ROOT'] . "/php/config/logger.xml"  );
-// Log in file
-Logger::configure('./config/log4php.properties');
-//Logger::configure($_SERVER['DOCUMENT_ROOT'] . "/php/config/log4phpNull.properties"  );
-//$logger = Logger::getLogger("main");
+require_once($_SERVER['DOCUMENT_ROOT'] . '/external/log4php/Logger.php');
+Logger::configure(dirname(__FILE__) . '/config/log4php.php');
 
 
 // Directorios varios
-define("SVG_DIR"  ,'../data/svg');
-define("IMG_DIR"  ,'../data/img');
-define("MOVIE_DIR",'../data/movie');
+define("SVG_DIR"  ,$_SERVER['DOCUMENT_ROOT'] . '/svgmovies.data/svg');
+define("IMG_DIR"  ,$_SERVER['DOCUMENT_ROOT'] . '/svgmovies.data/img');
+define("MOVIE_DIR",$_SERVER['DOCUMENT_ROOT'] . '/svgmovies.data/movie');
+
+// FIXME : HARD CODED URLS
 define("PATTERN_DIR",'file:///I:/Proyectos/Dibujo2D/web/patterns/');
-// TODO - La URL de este directorio se debería obtener de otra manera
 define("PATTERN_DIR_URL",'http://localhost/dibujo2D/patterns/');
 
 // EXE

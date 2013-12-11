@@ -16,7 +16,7 @@ var EVENT_MOVE = new YAHOO.util.CustomEvent("Move");
 	alert("Tu navegador no soporta localstorage de HTML5!");
 } else {*/
     YAHOO.util.Event.onDOMReady( function() {
-    	/*
+      /*
     	var widget = new WidgetImgSelect();
     	widget.setSelect("test");
     	widget.addValue("img1", 'http://localhost/dibujo2D/resources/mancha1.png');
@@ -130,7 +130,131 @@ var EVENT_MOVE = new YAHOO.util.CustomEvent("Move");
 		// TODO - Hacerlo configurable
 		toolBox.activeBWMode();
 		//toolBox.activeColorMode();
+		
+		// Close button
+		$('.bClose').click(function(){
+		  $(this).parent().hide();
+		});
+    $('#bRenderMovie').click(function(){
+      $('body').trigger('renderMovie');
     });
+    
+    $('#bGenerateImage').click(function(){
+      $('body').trigger('generateImage');
+    });
+    
+
+    $('#btnPaint').click(function(){
+      $('body').data('action', 'play');
+      $('body').trigger('paintMode');
+    });
+    
+    $('#btnMove').click(function(){
+      $('body').trigger('moveMode');
+    });
+    
+    $('#comandos button').click(function(){
+      $(this).parent().children().removeClass('selected');
+      $(this).addClass('selected');
+    });
+	  
+    // @todo : Chapuzilla toto esto....
+    var currZoomLevel = null;
+    var isZoomStart = null;
+    /*
+    $('#bZoomIn').click(function(){
+      $('body').addClass('modeZoom');
+      currZoomLevel = -1;
+      isZoomStart = true;
+      performZoom();
+    });
+
+    $('#bZoomOut').click(function(){
+      $('body').addClass('modeZoom');
+      currZoomLevel = 1;
+      isZoomStart = true;
+      performZoom();
+    });
+    
+    $('#bZoomStop').click(function(){
+      $('body').removeClass('modeZoom');
+      currZoomLevel = null;
+      isZoomStart = null;
+      // Reset, so the following actions (paint,...) create a NEW step
+      TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP);
+    });
+    */
+    
+    function performZoom() {
+      if ( currZoomLevel!=null ) {
+        // When start Zoom create a new step
+        if ( isZoomStart ) {
+          TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP);
+        }
+        $('body').trigger('zoom', currZoomLevel);
+        // For the rest, group all the zoom into the current step
+        isZoomStart = false;
+        TOOLBOX.setActionWhenMouseReleased(WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_CURRSTEP);
+        
+        setTimeout(performZoom, 500);
+      }
+    }
+    
+    var $lienzo = $('#lienzoSVG');
+    // Slider
+    /*
+    $("#zoomSlider .slider" ).slider({
+      value:100,
+      min: 0,
+      max: 500,
+      step: 50,
+      start : function(){
+        console.log('Start');
+      },
+      change : function(){
+        console.log('Change');
+        
+      },
+      stop: function(){
+        console.log('Stop ');
+      }
+    });
+    */
+    $( "#zoomSlider input")
+      .on('slidestart', function(){
+        $lienzo.trigger('customZoomStart');
+      })
+      .on('slidestop', function(){
+        $lienzo.trigger('customZoomEnd');
+      })
+      .bind( "change", function(event, ui) {
+        var $this = $(this);
+        // Previous value
+        var prevVal = $this.data('value')==null ? this.defaultValue : $this.data('value');
+        // Current Value
+        var currVal = $this.val();
+        // They are different
+        if ( prevVal!=currVal ) {
+          $this.data('value', currVal);
+          // Zoom out
+          if ( currVal > prevVal ) {
+            $lienzo.trigger('customZoomRun',[1]);
+          // Zoom In  
+          } else {
+            $lienzo.trigger('customZoomRun',[-1]);
+          }
+        }
+        
+      });
+    /* Basic/Advanced modes */
+    $('#comandos #mode').change(function(){
+      if ( $(this).val()=='advanced' ) {
+        $('body').addClass('modeAdvanced');
+      } else {
+        $('body').removeClass('modeAdvanced');
+      }
+    });
+  });
 /*}*/
 
 

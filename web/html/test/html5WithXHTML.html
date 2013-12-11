@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>HTML5 + XHTML</title>
+    <script type="text/javascript">
+    function startup() {
+        var ifrm = document.getElementById("myFrame");
+        //alert(ifrm);
+        //alert(ifrm.document);
+        var svg = ifrm.contentWindow.document.getElementById("mySVG");
+        //alert(svg);
+        // add circle
+        var eCircle = document.createElementNS("http://www.w3.org/2000/svg","circle");
+        eCircle.setAttribute("cx", "100");
+        eCircle.setAttribute("cy", "100");
+        eCircle.setAttribute("r" , "100");
+        eCircle.setAttribute("fill", "red");
+        //alert(eCircle);
+        alert("Before " + svg + ".appendChild(" + eCircle + ")");
+        svg.appendChild(eCircle);
+    }
+    </script>
+</head>
+<body onload="startup()">
+<h1>HTML5 con SVG en un iframe</h1>
+<iframe id="myFrame" src="svg.xhtml" width="600" height="600"></iframe>
+</body>
+</html>

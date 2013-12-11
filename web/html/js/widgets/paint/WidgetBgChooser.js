@@ -19,7 +19,6 @@ WidgetBgChooser.prototype.getBgUrl = function() {
 
 // ------------------------------------------------------------------ WidgetBase
 WidgetBgChooser.prototype.render = function() {
-	
 	// Añadimos un elemento que será el holder de esta clase
 	this.inputUrl = document.createElement("input");
 	this.container.appendChild(this.inputUrl );

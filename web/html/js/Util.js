@@ -140,12 +140,70 @@ Util.getPaddingObj = function(obj, addPadding) {
  * NOTA: esta funci�n est� pensada para usarla con el evento teniendo lugar DENTRO de obj (pej click de una imagen)
  *       Se desconode el resultado si el evento tiene lugar FUERA ��??
  */
+Util.getRelCoordinates = function(e,ele,logger) {
+  if ( logger ) {
+    logger.lowDebug('Util.getRelCoordinates');
+  }
+  
+  var $ele = $(ele);
+  if ( logger ) {
+    logger.lowDebug('$ele : ' + $ele);
+  }
+  var offset = $ele.offset(); 
+  if ( logger ) {
+    logger.lowDebug('offset : ' + offset);
+    /*if ( e.originalEvent.touches==null  ) {
+      logger.lowDebug('No touchpad');
+    } else {
+      logger.lowDebug('touches[0] : ' + e.originalEvent.touches[0]);
+    }*/
+  }
+  
+  var pageX=null;
+  var pageY=null;
+  
+  // Hammer
+  if ( e.gesture ) {
+    pageX = e.gesture.center.pageX;
+    pageY = e.gesture.center.pageY;
+  } else if ( e.originalEvent.touches ) {
+    pageX = e.originalEvent.touches[0].pageX;
+    pageY = e.originalEvent.touches[0].pageY;
+    
+  } else {
+    pageX = e.pageX;
+    pageY = e.pageY;
+  }
+  
+  if ( logger ) {
+    logger.debug('pageXY (' + pageX + ',' + pageY + ')');
+  }
+  var relX = pageX - offset.left;
+  var relY = pageY - offset.top; 
+  
+  return [relX, relY];
+}
+/*
 Util.getRelCoordinates = function(evt,obj) {
+  return Util.getRelCoordinatesTouchpad(evt,obj);
 	var evtXY = YAHOO.util.Event.getXY(evt);
 	var objXY = Util.getObjCoordinates(obj);
-	
+	Logger.getInstance().lowDebug("evt[" + evtXY[0] + "," + evtXY[1] + "] obj[" + objXY[0] + "," + objXY[1] + "]");
 	return [evtXY[0]-objXY[0],evtXY[1]-objXY[1]];
 }
+
+Util.getRelCoordinatesTouchpad = function(evt,obj) {
+  Logger.getInstance().lowDebug('X');
+  var orig = evt.originalEvent;  
+  var x = orig.changedTouches[0].pageX;  
+  var y = orig.changedTouches[0].pageY;  
+  
+  var evtXY = [x, y];
+  var objXY = Util.getObjCoordinates(obj);
+  Logger.getInstance().lowDebug("evt[" + evtXY[0] + "," + evtXY[1] + "] obj[" + objXY[0] + "," + objXY[1] + "]");
+  return [evtXY[0]-objXY[0],evtXY[1]-objXY[1]];
+}
+*/
 
 Util.removeUntilUnderscore = function(s) {
 	var idx = s.indexOf("_");

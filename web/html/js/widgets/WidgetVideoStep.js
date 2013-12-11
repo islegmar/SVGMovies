@@ -1,5 +1,8 @@
 /**
- * Representa un Step dentro de una película 
+ * Representa un Step dentro de una película. 
+ * Tiene asociado:
+ * - Un texto
+ * - Una serie de Fotogramas.
  */
 function WidgetVideoStep(id) {
 	// Id del step
@@ -93,6 +96,7 @@ WidgetVideoStep.prototype.render = function() {
 	// Texto de los fotogramas
 	// ------------
     this.eText = Util.getChildrenByClassName(pStep, "subtitulo");
+    
     // Cuando escribimos, actualizamos el texto de los fotogramas
 	// TODO ¿no puede ser demasiado?
     YAHOO.util.Event.addListener(this.eText, "keyup", function(evt, myself) {

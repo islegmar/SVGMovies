@@ -1,10 +1,143 @@
 <!DOCTYPE HTML>
+<!-- 
+Mobile meta & links
+=================== 
+Custom Icon and Image Creation Guidelines:
+http://developer.apple.com/library/safari/#documentation/UserExperience/Conceptual/MobileHIG/IconsImages/IconsImages.html
+ 
+Configuring Web Applications:
+http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/configuringwebapplications/configuringwebapplications.html
+ 
+Configuring the Viewport:
+http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/UsingtheViewport/UsingtheViewport.html
+ 
+Optimizing Web Content:
+http://developer.apple.com/library/safari/#documentation/appleapplications/reference/safariwebcontent/OptimizingforSafarioniPhone/OptimizingforSafarioniPhone.html 
+-->
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <title>SVGMovies</title>
+
+    <!--  ============================================== START : MOBILE TAGS -->    
+    <!-- VIEWPORT -->
+     
+    <!-- optimized for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     
+    <!-- optimized for mobile, zoom/scaling disabled -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+     
+     
+    <!-- BROWSER CHROME -->
+     
+    <!-- status bar styles: default, black, or black-translucent -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
+     
+    <!-- hides browser chrome -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+     
+     
+    <!-- HOME SCREEN ICONS -->
+     
+    <!-- home screen icon -->
+    <link rel="apple-touch-icon" href="img/customIcon.png" />
+     
+    <!-- home screen icon - ipad -->
+    <link rel="apple-touch-icon" href="img/customIcon.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px)" />
+    <!-- or -->
+    <link rel="apple-touch-icon" sizes="72x72" href="img/customIcon.png" />
+     
+    <!-- home screen icon - high res -->
+    <link rel="apple-touch-icon" href="img/customIcon.png" media="screen and (-webkit-min-device-pixel-ratio: 2)" />
+    <!-- or -->
+    <link rel="apple-touch-icon" sizes="114x114" href="img/customIcon.png" />
+     
+    <!-- home screen icon, omits iOS embellishments, works in Android -->
+    <link rel="apple-touch-icon-precomposed" href="img/customIcon.png" /> 
+     
+    <!-- home screen icon, omits iOS embellishments - ipad -->
+    <link rel="apple-touch-icon-precomposed" href="img/customIcon.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px)" />
+    <!-- or -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/customIcon.png" /> 
+     
+    <!-- home screen icon, omits iOS embellishments - high res -->
+    <link rel="apple-touch-icon-precomposed" href="img/customIcon.png" media="screen and (-webkit-min-device-pixel-ratio: 2)" /> 
+    <!-- or -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/customIcon.png" /> 
+     
+     
+    <!-- STARTUP IMAGES -->
+     
+    <!-- startup image for web apps - iPad - landscape (748x1024) 
+         Note: iPad landscape startup image has to be exactly 748x1024 pixels (portrait, with contents rotated).-->
+    <link rel="apple-touch-startup-image" href="img/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)" />
+     
+    <!-- startup image for web apps - iPad - portrait (768x1004) -->
+    <link rel="apple-touch-startup-image" href="img/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" />
+     
+    <!-- startup image for web apps (320x460) -->
+    <link rel="apple-touch-startup-image" href="img/iphone.png" media="screen and (max-device-width: 320px)" />
+
+
+    <!--  ================================================ END : MOBILE TAGS -->    
+
+    
+    <!--  Avoid zoom mobile devices -->
+    <meta name=viewport content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!--  Remove the address bar of the browser -->
+    <meta name=apple-mobile-web-app-capable content=yes>
+    
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+
+    <!-- 
+    <link rel="apple-touch-icon" href="apple-touch-icon-iphone.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-iphone4.png" />
+
+    -->
+    
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+    
+    <!-- 
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    -->
+
+
+
+
+    <!--  Associate the HTML page with an icon on the desktop -->
+    <!--  <link rel="apple-touch-icon" href="icono.png" /> -->
+    <!--  Associate an image to the application startup -->
+    <!--  <link rel="apple-touch-startup-image" href="icono.png" /> -->
+ 
+ 
+    <link href="./external/lessFramework4/lessFramework4.css" type="text/css" rel="stylesheet" />
+    <link href="./css/devices.css" type="text/css" rel="stylesheet" />    
+    <!-- hammer : pinch -->
+    <script src="./external/hammer/hammer.min.js"></script>    
+    <script src="./external/hammer/plugins/hammer.fakemultitouch.js"></script>    
+    <script src="./external/hammer/plugins/hammer.showtouches.js"></script>    
+    <script src="./external/jquery.hammer/jquery.hammer.min.js"></script>    
+    
+    <!--     
+    <script src="./external/jquery/jquery-1.9.1.min.js"></script>
+    <script src="./external/jquery/jquery-ui.js"></script>
+    <link href="./external/jquery/jquery-ui.css" type="text/css" rel="stylesheet" />    
+    -->
+    
     <!-- ==========================================  -->
     <!-- EXTERNOS  --> 
     <!-- ==========================================  -->
+    <!-- 
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="external/jquery.plugins/jquery.ui.touch-punch.min.js"></script>
+		-->
+		
     <!-- YUI -->     
     <link rel="stylesheet" type="text/css" href="external/yui.yahooapis.com/2.9.0/build/button/assets/skins/sam/button.css"/>
     <link rel="stylesheet" type="text/css" href="external/yui.yahooapis.com/2.9.0/build/container/assets/skins/sam/container.css"/>
@@ -19,8 +152,10 @@
     <script type="text/javascript" src="external/yui.yahooapis.com/2.9.0/build/yahoo/yahoo-min.js"></script>        
     <script type="text/javascript" src="external/yui.yahooapis.com/2.9.0/build/dragdrop/dragdrop-min.js"></script>    
 
+    <!-- 
     <script src="http://yui.yahooapis.com/2.9.0/build/menu/menu-min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.9.0/build/menu/assets/skins/sam/menu.css">
+    -->
         
     <!-- Modernizr -->
     <script type="text/javascript" charset="utf-8" src="external/modernizr/modernizr-2.0.6.js" ></script>
@@ -29,8 +164,9 @@
     <script type="text/javascript" charset="utf-8" src="external/catmullrom2bezier/catmullrom2bezier.js" ></script>
     
     <!-- Google canvg -->
-    <script type="text/javascript" charset="utf-8" src="external/canvg-1.0/rgbcolor.js"></script> 
-    <script type="text/javascript" charset="utf-8" src="external/canvg-1.0/canvg.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/rgbcolor.js"></script> 
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/StackBlur.js"></script>
+    <script type="text/javascript" src="http://canvg.googlecode.com/svn/trunk/canvg.js"></script> 
          
     <!-- SVG.toDataURL (https://github.com/sampula/SVG.toDataURL) -->
     <script type="text/javascript" charset="utf-8" src="external/svg.toDataURL/svg_todataurl.js"></script>
@@ -85,210 +221,90 @@
 
     <script type="text/javascript" charset="utf-8" src="js/main.js" ></script>
 </head>
-<body class="yui-skin-sam">
+<body data-action="paint">
+<div data-role="_page">
+<div data-role="_content">
 
-<div style="display:none;">
-	<div>UP: <span id="log"></span></div>
-	<div>UV: <span id="logUv"></span></div>
-	<div>ZOOM: <span id="logZoom"></span></div>
-	<div>OFFSET: <span id="logOffset"></span></div>
-</div>
-    
-
-<!-- Para añadir textos en el pide del SVG -->
-<!-- 
-<div>
-    <input type="text" size="100" id="svgText"></input> (Enter para escribir texto)
-</div>
- -->
- 
-
- 
-<!--  Titulares  -->
-<div>
-	<span id="titLienzo"><b>LIENZO</b> (Click&Drag pinta, D&D mueve, Rueda zoom). <a href="#" id="btnLimpia">Limpia!</a></span>
-	<span id="titVisor"><b>VISOR</b> (pulsa <span id="btnPlay">Play!</span> para ver y cursor para avanzar y retroceder)</span>
-</div>
-
-<!-- ========================================= --> 
-<!-- Lienzo -->
-<!-- ========================================= --> 
-<div id="lienzoSVG" oncontextmenu="return false;">
-    <!-- 
-    <iframe id="myFrame" src="svg.xhtml" width="640" height="480"></iframe>
-    -->
-    <svg id="mySVG" version="1.1" width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <g id="mainGroup"></g>
-        <!-- 
-        <text x="10" y="460" id="footerText">Texto</text>
-         -->
-         <g id="gFooterText" display="none" transform="translate(0,440)">
-             <rect width="100%" height="40" fill="black"/>
-             <text id="footerText" x="10" y="20" font-size="14" font-family="Verdana" font-weight="bold" fill="white"></text>
-         </g>
-    </svg>    
-</div>
-
-<!--  ========================================= --> 
-<!-- Herramientas de pintura -->
-<!--  ========================================= --> 
-<div id="paintBox">
-	<div class="WidgetPaintTool toolWidgetPaintMode">
-	    <form>
-	       <!--
-	        <b>Modo de dibujo</b><br/>
-	        Full color : <input type="radio" name="paintMode" value="color"/><br/>
-	        B&W: <input type="radio" name="paintMode" value="b&w" checked/><br/>
-	        -->
-	        <b>Acción con el nuevo dibujo</b><br/>
-	        <table border="1">
-	            <tr>
-	                <td class="tHeader">&nbsp;</td>
-	                <td class="tHeader">Current Step</td> 
-                    <td class="tHeader">New Step</td> 
-	            </tr>
-                <tr>
-                    <td class="tHeader">Fotograma Actual</td>
-                    <td><input type="radio" name="actionWhenMouseReleased" value="1"/></td> 
-                    <td>&nbsp;</td> 
-                </tr>
-                <tr>
-                    <td class="tHeader">Un nuevo Fotograma (aparece de golpe)</td>
-                    <td><input type="radio" name="actionWhenMouseReleased" value="3"/></td> 
-                    <td><input type="radio" name="actionWhenMouseReleased" value="2"/></td> 
-                </tr>
-                <tr>
-                    <td class="tHeader">Varios nuevos Fotogramas (trazos)</td>
-                    <td><input type="radio" name="actionWhenMouseReleased" value="5"/></td> 
-                    <td><input type="radio" name="actionWhenMouseReleased" value="4" checked/></td> 
-                </tr>
-	        </table>
-	        <table>
-	            <tr>
-	                <td>Zoom crea fotogramas</td>
-	                <td><input id="zoomCreaFotogramas"  type="checkbox"/></td>
-	            </tr>
-	            <tr>
-	                <td>Move crea fotogramas</td>
-	                <td><input id="moveCreaFotogramas"  type="checkbox"/></td>
-	            </tr>
-                <tr>
-                    <td>Stroke-with constante con zoom</td>
-                    <td><input id="zoomChangeStrokeWidth"  type="checkbox" checked/></td>
-                </tr>
-	        </table>
-        </form>
-	</div>
-	<table class="WidgetPaintTool toolWidgetToolLinea">
-        <!-- Pincel -->
-        <tr>
-           <td>Num Puntos saltar</td>
-           <td><input id="numPuntosSaltar" type="text" size="4"/></td>
-        </tr>
-        <tr>
-           <td>Suavizar Caminos</td>
-           <td><input id="suavizarCamino"  type="checkbox"/></td>
-        </tr>
-        <!-- Grosor Pincel -->
-        <tr class="WidgetPaintTool toolWidgetPaintBrush">
-	       <td>Grosor Pincel</td>
-	       <td><input id="grosorPincel" type="text" size="4"/></td>
-        </tr>
-        <!--  Nivel de tembleque  -->
-        <tr class="WidgetPaintTool toolWidgetPaintTembleque">
-           <td>Tembleque</td>
-           <td><input size="4"/></td>
-       </tr>
-	</table>
-	<!--  Color del Pincel -->
-	<div class="WidgetPaintTool toolWidgetColorPicker">
-	    <b>Color Pincel</b>
-	    <!-- Color mode -->
-	    <div class="pColorMode oculto">
-	        <!--  Selectores -->
-	        <div class="pSelectores">
-	            none    <input type="radio" name="kindColor" value="none"/>
-	            color   <input type="radio" name="kindColor" value="color" checked/>
-	            pattern <input type="radio" name="kindColor" value="pattern"/>
-	        </div>
-	        <!-- Selección del color -->
-	        <div class="pColor" style="visibility:hidden;">
-	           Color
-	           <input/>
-	        </div>
-	        <!-- Selección del Pattern -->
-	        <div class="pPattern" style="visibility:hidden;">
-	           <select>
-	           </select>
-	        </div>
-	    </div>
-        <!-- B&W mode -->
-        <form class="pBWMode">
-            none  <input type="radio" name="colorBWMode" value="none"/>                            
-            white <input type="radio" name="colorBWMode" value="#FFFFFF"  checked/>
-            red   <input type="radio" name="colorBWMode" value="red"/>
-            black <input type="radio" name="colorBWMode" value="#000000"/>
-        </form>
-	</div>
-	<!--  Color del Relleno -->
-	<div class="WidgetPaintTool toolWidgetFillColorPicker">
-	    <b>Color Relleno</b>
-	    <!--  Color Mode -->
-	    <div class="pColorMode oculto">
-	        <!--  Selectores -->
-	        <div class="pSelectores">
-	            none    <input type="radio" name="kindRelleno" value="none" checked/>
-	            color   <input type="radio" name="kindRelleno" value="color"/>
-	            red     <input type="radio" name="kindRelleno" value="red"/>
-	            pattern <input type="radio" name="kindRelleno" value="pattern"/>
-	        </div>
-	        <!-- Selección del color -->
-	        <div class="pColor" style="visibility:hidden;">
-	           Color
-	           <input></input>
-	        </div>
-	        <!-- Selección del Pattern -->
-	        <div class="pPattern" style="visibility:hidden;">
-	           <select></select>
-	        </div>
-	    </div>
-	    <!-- B&W mode -->
-        <form class="pBWMode">
-            none  <input type="radio" name="fillBWMode" value="none" checked/>                            
-            white <input type="radio" name="fillBWMode" value="#FFFFFF"/>
-            red   <input type="radio" name="fillBWMode" value="red"/>
-            black <input type="radio" name="fillBWMode" value="#000000"/>
-        </form>
-	</div>
-    <!-- Círculo-->
-    <!-- 
-    <div class="WidgetPaintTool toolWidgetToolCirculo oculto">
-        <div class="toolActiva oculto">
-            <b>CÍRCULO</b><br/>
-            Radio : <input type="text" size="4"/>
-        </div>
-        <div class="toolInactiva">
-            Círculos (click activar)
-        </div>
+<div id="mainPanels">
+  <div class="asRow">
+  	<!-- ========================================= --> 
+  	<!-- Lienzo for painting -->
+  	<!-- ========================================= --> 
+  	<div id="lienzoSVGWrapper" class="showWhenPaint showWhenMove">
+      <div id="lienzoSVG" oncontextmenu="return false;">
+    	  <svg id="mySVG" version="1.1" width="800" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    	      <g id="mainGroup"></g>
+    	       <g id="gFooterText" display="none" transform="translate(0,440)">
+    	           <rect width="100%" height="40" fill="black"/>
+    	           <text id="footerText" x="10" y="20" font-size="14" font-family="Verdana" font-weight="bold" fill="white"></text>
+    	       </g>
+    	  </svg>    
+    	</div>
+      <div id="zoomSlider">
+       <input min="0" max="100" value="50" step="10" type="range" />
+      </div>
     </div>
-	 -->
+  	
+  	<!-- ========================================= --> 
+  	<!-- Visor de la película -->
+  	<!-- ========================================= --> 
+  	<div id="visorMovie" class="showWhenPlay"></div>
+  	
+  	<!-- ========================================= --> 
+  	<!-- Zoom commands -->
+  	<!-- ========================================= --> 
+  	<!-- 
+    <div id="pZoom">
+  		<button id="bZoomOut">+</a>
+  		<button id="bZoomIn">-</a>
+  		<button id="bZoomStop">STOP</a>
+  	</div>
+    -->
+  	
+  	<!-- ========================================= --> 
+  	<!-- Commands -->
+  	<!-- ========================================= --> 
+  	<div id="comandos">
+  	  <!-- Toggle : Basic or Advanced mode -->
+      <div id="modeSelectorWrapper">
+        <select id="mode" data-role="slider" data-theme="c" data-track-theme="a" style="width:100%;">
+          <option value="basic">Basic</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+
+    	<a id="btnPlay"  data-role="button" class="showWhenPaint">Play</a>
+  	  
+      <!-- Only one is shown at once (Paint or Move) -->
+    	<a id="btnMove"  data-role="button" class="showWhenPaint advancedOnly">Move</a>
+    	<a id="btnPaint" data-role="button" class="showWhenMove showWhenPlay" >Pinta</a>
+  	  
+  	  <a data-role="button" id="bShowToolBox">ToolBox</a>
+  	  
+  		<a data-role="button" id="bRenderMovie" class="advancedOnly">Genera!</a>
+  	  
+      <div data-role="controlgroup" data-type="horizontal" class="advancedOnly">
+    	  <a data-role="button" id="bSaveMovie" data-mini="true">Guarda</a>
+    		<a data-role="button" id="bLoadMovie" data-mini="true">Carga</a>
+  		</div>
+      <!-- 
+  		<a data-role="button" id="bPlayReal">Genera Imágenes</a>
+  		-->
+  		<a data-role="button" id="bGenerateImage" class="advancedOnly">Photo!</a>
+  	  <a data-role="button" id="btnLimpia">Limpia</a>
+      <span class="printAction"></span>
+  	</div>
+    
+  </div>
+
+	<!--
+	Panel donde se van a poner los índices de los diversos steps
+	-->
+	<div id="pStepsIndexContainer">
+		<div id="pStepsIndex"></div>
+	</div>
 </div>
 
-<!-- ========================================= --> 
-<!-- Visor de la película -->
-<!-- ========================================= --> 
-<div id="visorMovie"></div>
-
-<!--
-Panel donde se van a poner los índices de los diversos steps
- -->
-<span id="bSaveMovie" class="bigButton">Save Movie</span>
-<span id="bLoadMovie" class="bigButton">Load Movie</span>
-<span id="bPlayReal" class="bigButton">Genera Imágenes</span>
-<span id="bSaveCurrFotograma" class="bigButton">Save Fotograma</span>
-<b>Steps</b>
-<span id="pStepsIndex">
-</span>
 
 <!--
 Panel donde se pondrá el contenido (fotogramas) de cada uno de los steps. 
@@ -298,12 +314,138 @@ A medida que se van creando steps, se crean paneles, pero sólo uno será visibl
     <!--  Aquí dentro irán copias de tmplStep, uno por Step  -->
 </div>
 
-<!-- ========================================= --> 
-<!-- Logger -->
-<!-- ========================================= --> 
-<div id="pLogger" class="oculto">
-<h3>Logger</h3>
-</div>
+<!--  ========================================= --> 
+<!-- Herramientas de pintura -->
+<!--  ========================================= --> 
+<div id="paintBox">
+	<a data-role="button" class="bClose"></a>
+  <div class="WidgetPaintTool toolWidgetPaintMode">
+    <form>
+      <!--
+	        <b>Modo de dibujo</b><br/>
+	        Full color : <input type="radio" name="paintMode" value="color"/><br/>
+	        B&W: <input type="radio" name="paintMode" value="b&w" checked/><br/>
+	        -->
+      <table border="1" class="advancedOnly">
+        <tr>
+          <td class="tHeader">&nbsp;</td>
+          <td class="tHeader">Current Step</td>
+          <td class="tHeader">New Step</td>
+        </tr>
+        <tr>
+          <td class="tHeader">Fotograma Actual</td>
+          <td><input type="radio" name="actionWhenMouseReleased" value="1" />
+          </td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="tHeader">Un nuevo Fotograma (aparece de golpe)</td>
+          <td><input type="radio" name="actionWhenMouseReleased" value="3" />
+          </td>
+          <td><input type="radio" name="actionWhenMouseReleased" value="2" />
+          </td>
+        </tr>
+        <tr>
+          <td class="tHeader">Varios nuevos Fotogramas (trazos)</td>
+          <td><input type="radio" name="actionWhenMouseReleased" value="5" />
+          </td>
+          <td><input type="radio" name="actionWhenMouseReleased" value="4"
+            checked />
+          </td>
+        </tr>
+      </table>
+      <table class="advancedOnly">
+        <tr>
+          <td>Zoom crea fotogramas</td>
+          <td><input id="zoomCreaFotogramas" type="checkbox" checked/>
+          </td>
+        </tr>
+        <tr>
+          <td>Move crea fotogramas</td>
+          <td><input id="moveCreaFotogramas" type="checkbox" checked/>
+          </td>
+        </tr>
+        <tr>
+          <td>Stroke-with constante con zoom</td>
+          <td><input id="zoomChangeStrokeWidth" type="checkbox" checked />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <table class="WidgetPaintTool toolWidgetToolLinea">
+    <!-- Pincel -->
+    <tr class=" advancedOnly">
+      <td>Num Puntos saltar</td>
+      <td><input id="numPuntosSaltar" type="number" min="1" max="10" size="5" />
+      </td>
+    </tr>
+    <tr class="advancedOnly">
+      <td>Suavizar Caminos</td>
+      <td><input id="suavizarCamino" type="checkbox" />
+      </td>
+    </tr>
+    <!-- Grosor Pincel -->
+    <tr class="WidgetPaintTool toolWidgetPaintBrush">
+      <td>Grosor Pincel</td>
+      <td><input id="grosorPincel" type="number" min="1" max="10" size="5" />
+      </td>
+    </tr>
+    <!--  Nivel de tembleque  -->
+    <tr class="WidgetPaintTool toolWidgetPaintTembleque advancedOnly">
+      <td>Tembleque</td>
+      <td><input type="number" min="1" max="10" size="5" />
+      </td>
+    </tr>
+  </table>
+  <div class="toolWidgetLineaRelleno asRow">
+ 		<span class="cbLineWhite selected"      data-color='{ "line" : "#FFFFFF" , "fill" : "none"}'></span>
+    <span class="cbLineBlack"               data-color='{ "line" : "#000000" , "fill" : "none"}'></span>
+ 		<span class="cbLineRed"                 data-color='{ "line" : "red" ,     "fill" : "none"}'></span>
+    
+    <span class="cbWhiteBlack advancedOnly" data-color='{ "line" : "#FFFFFF" , "fill" : "#000000"}'></span>
+ 		<span class="cbWhiteRed   advancedOnly" data-color='{ "line" : "#FFFFFF" , "fill" : "red"}'></span>
+ 		
+ 		<span class="cbBlackWhite advancedOnly" data-color='{ "line" : "#000000" , "fill" : "#FFFFFF"}'></span>
+ 		<span class="cbBlackRed   advancedOnly" data-color='{ "line" : "#000000" , "fill" : "red"}'></span>
+ 		
+ 		<span class="cbRedWhite   advancedOnly" data-color='{ "line" : "red"     , "fill" : "#FFFFFF"}'></span>
+ 		<span class="cbRedBlack   advancedOnly" data-color='{ "line" : "red"     , "fill" : "#000000"}'></span>
+ 		
+ 		<span class="cbWhiteWhite"              data-color='{ "line" : "#FFFFFF" , "fill" : "#FFFFFF"}'></span>
+ 		<span class="cbBlackBlack"              data-color='{ "line" : "#000000" , "fill" : "#000000"}'></span>
+ 		<span class="cbRedRed"                  data-color='{ "line" : "red"     , "fill" : "red"}'></span>
+ 		
+ 		</div>
+  <div class="WidgetPaintTool toolWidgetColorPicker"></div>
+  <div class="WidgetPaintTool toolWidgetFillColorPicker"></div>
+  
+  </div>
+<script>
+	$('#bShowToolBox').click(function(){
+	  $('#paintBox').toggle();
+	});
+
+
+	/*
+	$('#paintBox').click(function(){
+	  $('#paintBox').hide();
+	  $('#bShowToolBox').show();
+	});
+	*/
+
+	/* ---------------------------------------------------------- Borders/Fills */
+	/* Select the button */
+	$('.toolWidgetLineaRelleno').children().click(function(){
+		var $ele = $(this);
+		$ele.parent().children().removeClass('selected');
+		$ele.addClass('selected');
+		var color = $ele.data('color');
+		$('body').trigger('lineColor',[color.line]);
+		$('body').trigger('bgColor',[color.fill]);
+	});
+</script>
+<canvas id="renderCanvas" width="800" height="480"></canvas>
 
 
 <!-- ========================================= --> 
@@ -317,7 +459,10 @@ A medida que se van creando steps, se crean paneles, pero sólo uno será visibl
     </div>
     <!--  Template Step -->
     <div id="tmplStep">
-        <div>
+			<div>
+				<input class="subtitulo" style="width: 800px;"></input>
+			</div>
+	    <div class="stepDetalle advancedOnly">
             <div style="display:inline-block;vertical-align:top;">
                 <div>
                     <span class="startStep"></span>
@@ -328,16 +473,28 @@ A medida que se van creando steps, se crean paneles, pero sólo uno será visibl
             </div>                 
             <div class="pFotogramas" style="display:inline-block;vertical-align:top;"></div>
         </div>
-        <input size="100" class="subtitulo"><span> Introduce el texto para los fotogramas (actualización automática). En blanco, el texto se borra</span>    
     </div>    
 </div>
 
+<div id="pLogger">
+<h3>Logger</h3>
+</div>
 
-<!-- 
+
+<!-- ================================================================= OLD STUFF  
+
+// ----------------------------------------------------------------------- Trace
+<div style="display:none;">
+  <div>UP: <span id="log"></span></div>
+  <div>UV: <span id="logUv"></span></div>
+  <div>ZOOM: <span id="logZoom"></span></div>
+  <div>OFFSET: <span id="logOffset"></span></div>
+</div>
+
+// --------------------------------------------- See SVG and the rendered Canvas
 <textarea rows="10" cols="40" id="svgContent"></textarea>
- -->
-<!-- 
- 
+
+// ------------------------------------------------------ Use canvas instead SVG
 <h1>Canvas de HTML5</h1>
 <canvas id="html5canvas" width="700" height="400"></canvas>
 
@@ -348,12 +505,30 @@ A medida que se van creando steps, se crean paneles, pero sólo uno será visibl
     <input type="hidden" name="image"/>
     <input type="hidden" name="ind"/>
 </form>
- -->
-<!--
+
+// ------------------------------------------------------------------- Test img?
 <img id="testImg" width="300px" height="300px" style="border:1px solid black;" src="http://eff-9.typepad.com/photos/uncategorized/gunshipwallpaper.jpg"></img> 
--->
-<!-- 
-<canvas id="html5canvas" width="640" height="480"></canvas>
--->
+
+// ------------------------------------------------------------------------ ¿¿??
+<div>
+  <span id="titLienzo">
+    <b>LIENZO</b> (Click&amp;Drag pinta, D&amp;D mueve, Rueda zoom). 
+    <a href="#" id="btnLimpia">Limpia!</a>
+  </span>
+  <span id="titVisor">
+    <b>VISOR</b> (pulsa <span id="btnPlay">Play!</span> para ver y cursor para avanzar y retroceder)
+  </span>
+</div>
+
+// ---------------------------------------------------------------------- Logger
+<div id="pLogger">
+<h3>Logger</h3>
+</div>
+
+============================================================================ -->
+<!--  jquery-mobile -->
+</div>
+</div>
+
 </body>
 </html>

@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+
+/**
+ * Include the custom CSS for specific devices.
+ * Because those CSS are app-specific, this CSS MUST be copied or linked into the
+ * corresponding css app folder. 
+ * So, you CA NOT use
+ *     <link href="/css/devices.css" type="text/css" rel="stylesheet" />
+ * Instead, use
+ *     <link href="./css/devices.css" type="text/css" rel="stylesheet" />
+ * and in your app
+ * css/
+ * |- devices/ -> Device specific CSS files
+ * |- devices.css
+ */
+/* Specific for devices */
+@import "./devices/default.css"; 
+@import "./devices/tablet.css"     only screen and (min-width: 768px) and (max-width: 991px);
+@import "./devices/mobile.css"     only screen and (max-width: 767px);
+@import "./devices/mobileWide.css" only screen and (min-width: 480px) and (max-width: 767px);
+/* @import "./devices/retina.css"     only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2); */
+
+     

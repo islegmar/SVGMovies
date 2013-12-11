@@ -57,6 +57,11 @@ WidgetPaintToolBox.prototype.setLienzo = function(lienzo) {
 	this.lienzo = lienzo;
 }
 
+WidgetPaintToolBox.prototype.setActionWhenMouseReleased = function(action) {
+  return this.tools[WidgetPaintToolBox.TOOL_PAINTMODE].setActionWhenMouseReleased(action);
+}
+
+
 // ------------------------------------------------------------ Métodos Públicos
 /** Activamos el modo de pintura en color */
 WidgetPaintToolBox.prototype.activeColorMode  = function() {

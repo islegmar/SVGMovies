@@ -84,11 +84,24 @@ WidgetVisorSVG.prototype.render = function() {
     ).enable();
 }
 
+/**
+ * Add a new fotograma
+ * 
+ * @param fotograma      The SVG element (the fotogram)
+ * @param isPathChanged  true if the path has changed, false if is moving/zoom or add text
+ * @param temblequeLevel If we have to "shake" randomly
+ * @param actionOnSave   Inidcates if we create a new step or add a fotorgram to the actual.
+ */
 WidgetVisorSVG.prototype.addFotograma = function(fotograma, isPathChanged, temblequeLevel, actionOnSave) {
+  console.log('actionOnSave : ' + actionOnSave);
+  console.log('ADD_ONE_FOTOGRAMA_NEWSTEP : ' + WidgetPaintMode.ADD_ONE_FOTOGRAMA_NEWSTEP);
+  console.log('ADD_SEVERAL_FOTOGRAMAS_NEWSTEP : ' + WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP );
+  
 	// Creamos un nuevo step. Si no es el caso, usamos el que ya tenemos
 	if ( this.currStep==null || 
 	     actionOnSave==WidgetPaintMode.ADD_ONE_FOTOGRAMA_NEWSTEP ||
-	     actionOnSave==WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP ) {
+	     actionOnSave==WidgetPaintMode.ADD_SEVERAL_FOTOGRAMAS_NEWSTEP ) 
+	{
 		// Si tenemos uno activo, lo ocultamos
 		if ( this.currStep!=null ) {
 			this.currStep.hide();
@@ -111,9 +124,12 @@ WidgetVisorSVG.prototype.addFotograma = function(fotograma, isPathChanged, tembl
 		var link = document.createElement("a");
 		link.innerHTML = idStep;
 		this.currStep.setEIdStep(link);
-		// Al hacer click, mostramos este step 
+		
+		// Al hacer click, mostramos el primer fotograma de este step
 		YAHOO.util.Event.addListener(link, "click", function(event, params) {
-			// Ocultamos el activo
+		  // Pasamos a modo play
+		  $('body').attr('data-action', 'play');
+		  // Ocultamos el activo
 			params.myself.currStep.hide();
 			
 			// Activamos éste
@@ -214,12 +230,12 @@ WidgetVisorSVG.prototype.addFotograma = function(fotograma, isPathChanged, tembl
 	}
 }
 
-WidgetVisorSVG.prototype.play = function() {
+WidgetVisorSVG.prototype.play = function(cbOnDone) {
 	this.indCurrStep=null;
-	this.playNextStep();
+	this.playNextStep(cbOnDone);
 }
 
-WidgetVisorSVG.prototype.playNextStep = function() {
+WidgetVisorSVG.prototype.playNextStep = function(cbOnDone) {
 	if ( this.indCurrStep==null || (this.indCurrStep+1)<this.steps.length ) {
 		if ( this.indCurrStep==null ) {
 			this.indCurrStep=0;
@@ -234,8 +250,12 @@ WidgetVisorSVG.prototype.playNextStep = function() {
 		
 		var myself = this; // TODO - Closure
 		this.currStep.play(function() {
-			myself.playNextStep();
+			myself.playNextStep(cbOnDone);
 		});
+	} else {
+	  if ( cbOnDone ) {
+	    cbOnDone();
+	  }
 	}
 }
 
@@ -451,7 +471,7 @@ WidgetVisorSVG.prototype.playReal = function() {
 				  success: function(o) {
 				  	var data = YAHOO.lang.JSON.parse(o.responseText);
 				  	console.log("Grabado ok. id : " + data.startInd); 
-			    	//Logger.getInstance().log("FIN save [" + data.startInd + "]. endInd : " + data.endInd); 
+			    	//Logger.getInstance().lowDebug("FIN save [" + data.startInd + "]. endInd : " + data.endInd); 
 			      },
 			      failure: function(o) { alert("Error : " + o.responseText); }
 			    }, "image="               + svg_xml             + 

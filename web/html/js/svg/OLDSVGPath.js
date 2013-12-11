@@ -36,7 +36,7 @@ SVGPath.prototype.startPath = function(punto) {
 	this.ePath .setAttribute('d', this.puntos);
 	this.ePath .setAttribute('style' , this.ePath);
     
-    Logger.getInstance().log("START PATH : " + this.puntos , "logUv");
+    Logger.getInstance().lowDebug("START PATH : " + this.puntos , "logUv");
     
     return this.ePath;
 }

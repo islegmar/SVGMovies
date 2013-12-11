@@ -36,6 +36,8 @@ YAHOO.lang.extend(WidgetColorPicker, WidgetPaintTool);
 // --------------------------------------------------------------------- Setters
 // ------------------------------------------------------------ Métodos Públicos
 WidgetColorPicker.prototype.getColor = function() {
+  return this.color;
+  /*
 	// Si estamos en B&W mode, la cosa va de otra manera
 	if ( this.isBWMode ) {
 		var color = null;
@@ -66,6 +68,7 @@ WidgetColorPicker.prototype.getColor = function() {
 			return "url(#" + this.imgSelect.getValue() + ")";
 		}
 	}
+	*/
 }
 
 WidgetColorPicker.prototype.activeColorMode = function() {
@@ -112,6 +115,14 @@ WidgetColorPicker.prototype.activeBWMode = function() {
  * Parmitmos de que todos los elementos HTML existen y sólo hay que encontrarlos
  */ 
 WidgetColorPicker.prototype.render = function() {
+  this.color = '#FFFFFF';
+  
+  // ------------------------------------------------------------------ Listener
+  $('body').bind('lineColor', {myself:this}, function(evt, color) {
+    var myself = evt.data.myself;
+    myself.color = color;
+  });
+  /*
 	// --------------
 	// Color mode y B&W
 	// --------------
@@ -172,6 +183,7 @@ WidgetColorPicker.prototype.render = function() {
 	this.imgSelect = new WidgetImgSelect();
 	this.imgSelect.setSelect(Util.getChildrenByTagName(this.pPattern, "select"));
 	this.imgSelect.render();
+	*/
 }
 
 /** Activa uno de los paneles, el que tiene valor value */
